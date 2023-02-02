@@ -3,12 +3,13 @@ using SRG_SYSTEM.Models;
 using SRG_SYSTEM.Services;
 using System.Data;
 using System.Diagnostics.Metrics;
+using System.Reflection.PortableExecutable;
 
 namespace SRG_SYSTEM.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public void GetCountryList()
+        public List<Customer> GetCountryList()
         {
 
 
@@ -24,6 +25,16 @@ namespace SRG_SYSTEM.Repository
 
                     CommandType = CommandType.StoredProcedure
                 };
+                MySqlParameter lastPage = new MySqlParameter
+                {
+                    ParameterName = "@lastPage", 
+                    MySqlDbType = MySqlDbType.Int32,
+                    Value = 600, 
+                    Direction = ParameterDirection.Input 
+                };
+                //Add the parameter to the Parameters property of SqlCommand object
+                cmd.Parameters.Add(lastPage);
+
                 //Open the Connection
                 connection.Open();
 
@@ -35,11 +46,14 @@ namespace SRG_SYSTEM.Repository
 
                     var mappedCustomer = mapper.GetCustomer();
                     customers.Add(mappedCustomer);
-
+                    
                 }
+                
+               
             }
 
             Console.WriteLine("");
+            return customers;
 
 
         }
