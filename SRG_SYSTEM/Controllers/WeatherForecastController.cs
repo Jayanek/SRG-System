@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SRG_SYSTEM.Repository;
 
 namespace SRG_SYSTEM.Controllers
 {
@@ -12,15 +13,18 @@ namespace SRG_SYSTEM.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ICustomerRepository repository;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ICustomerRepository repository)
         {
             _logger = logger;
+            this.repository = repository;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            repository.GetCountryList();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
