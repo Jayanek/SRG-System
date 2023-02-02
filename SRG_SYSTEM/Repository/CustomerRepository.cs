@@ -12,7 +12,7 @@ namespace SRG_SYSTEM.Repository
         {
 
 
-            string cs = @"server=localhost;user id=root;password=Fit60172662$;database=sakila";
+            string cs = @"server=localhost;user id=root;password={};database=sakila";
             var customers = new List<Customer>();
 
             //using var con = new MySqlConnection(cs);
