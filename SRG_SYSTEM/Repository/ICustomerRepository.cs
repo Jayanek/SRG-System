@@ -1,7 +1,9 @@
-﻿namespace SRG_SYSTEM.Repository
+﻿using SRG_SYSTEM.Models;
+
+namespace SRG_SYSTEM.Repository
 {
     public interface ICustomerRepository
     {
-        void GetCountryList();
+        List<Customer> GetCountryList();
     }
 }
