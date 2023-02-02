@@ -2,8 +2,6 @@
 using SRG_SYSTEM.Models;
 using SRG_SYSTEM.Services;
 using System.Data;
-using System.Diagnostics.Metrics;
-using System.Reflection.PortableExecutable;
 
 namespace SRG_SYSTEM.Repository
 {
