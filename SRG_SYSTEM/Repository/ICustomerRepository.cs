@@ -4,6 +4,6 @@ namespace SRG_SYSTEM.Repository
 {
     public interface ICustomerRepository
     {
-        List<Customer> GetCountryList(int lastPage);
+        List<Customer> GetCustomerList(int lastPage);
     }
 }

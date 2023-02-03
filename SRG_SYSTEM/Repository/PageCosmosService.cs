@@ -1,45 +1,32 @@
-﻿using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Linq;
-using SRG_SYSTEM.DataAccess;
+﻿using SRG_SYSTEM.DataAccess;
 
 namespace SRG_SYSTEM.Repository
 {
-    public class PageCosmosService:IPageCosmosService
+    public class PageCosmosService : IPageCosmosService
     {
-        private readonly Container _container;
-        public PageCosmosService(CosmosClient cosmosClient,
-        string databaseName,
-        string containerName)
+        private readonly ICosmosDataAccess<PageTracker> _cosmosDataAccess;
+
+        public PageCosmosService(ICosmosDataAccess<PageTracker> cosmosDataAccess)
         {
-            _container = cosmosClient.GetContainer(databaseName, containerName);
+            _cosmosDataAccess = cosmosDataAccess;
         }
 
-        public async Task AddAsync(PageTracker PageTracker)
+        public async Task AddPageTracker(PageTracker PageTracker)
         {
-             await _container.CreateItemAsync<PageTracker>(PageTracker, new PartitionKey(PageTracker.Id));
+            await _cosmosDataAccess.AddAsync(PageTracker);
         }
 
         public async Task<PageTracker> GetPageTracker()
         {
-            //var query = _container.GetItemQueryIterator<Car>(new QueryDefinition(sqlCosmosQuery));
             PageTracker query = null;
-            try
-            {
-                query = await _container.ReadItemAsync<PageTracker>(id: "1", partitionKey: new PartitionKey("1"));
-            }
-            catch
-            {
+            return await _cosmosDataAccess.GetAsync(query);
 
-            }
-
-            return query;
-           
         }
 
-        public async Task<PageTracker> Update(PageTracker pageTracker)
+        public async Task<PageTracker> UpdatePageTracker(PageTracker pageTracker)
         {
-            var item = await _container.UpsertItemAsync<PageTracker>(pageTracker, new PartitionKey("1"));
-            return item;
+            return await _cosmosDataAccess.UpdateAsync(pageTracker);
+
         }
     }
 }
