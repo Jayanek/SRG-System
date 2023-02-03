@@ -4,9 +4,9 @@ namespace SRG_SYSTEM.Repository
 {
     public interface IPageCosmosService
     {
-        Task AddAsync(PageTracker pageTracker);
+        Task AddPageTracker(PageTracker pageTracker);
 
         Task<PageTracker> GetPageTracker();
-        Task<PageTracker> Update(PageTracker pageTracker);
+        Task<PageTracker> UpdatePageTracker(PageTracker pageTracker);
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Net.Http.Headers;
+using SRG_SYSTEM.DataAccess;
 using SRG_SYSTEM.Repository;
 using WebApiContrib.Core.Formatter.Protobuf;
 
@@ -8,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<ICustomerRepository,CustomerRepository>();
 
+builder.Services.AddScoped<IPageCosmosService, PageCosmosService>();
 
+builder.Services.AddSingleton<ICustomerDataAccess, CustomerDataAccess>();
 
+// Add Protobuf mapper
 builder.Services.AddControllers(options =>
 {
     options.FormatterMappings
@@ -17,8 +21,8 @@ builder.Services.AddControllers(options =>
           MediaTypeHeaderValue.Parse("application/x-protobuf"));
 }).AddProtobufFormatters();
 
-
-builder.Services.AddSingleton<IPageCosmosService>(options =>
+// Add CosmosDb
+builder.Services.AddSingleton<ICosmosDataAccess<PageTracker>>(options =>
 {
     string url = builder.Configuration.GetSection("CosmosDbSettings")
     .GetValue<string>("AccountURL");
@@ -34,7 +38,7 @@ builder.Services.AddSingleton<IPageCosmosService>(options =>
         primaryKey
     );
 
-    return new PageCosmosService(cosmosClient, dbName, containerName);
+    return new CosmosDataAccess<PageTracker>(cosmosClient, dbName, containerName,"1");
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

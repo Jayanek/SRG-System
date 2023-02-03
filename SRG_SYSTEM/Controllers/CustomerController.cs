@@ -24,19 +24,19 @@ namespace SRG_SYSTEM.Controllers
         {
             //try to get last item from the db
             var lastPageDb = await _cosmosService.GetPageTracker();
-            var lastID = lastPageDb != null ? lastPageDb.LastPageNo : 0; 
+            var lastID = lastPageDb != null ? lastPageDb.LastPageNo : 0;
 
             //get customer list
-            var customerList = _repository.GetCountryList(lastID);
+            var customerList = _repository.GetCustomerList(lastID);
             var customerListLastId = customerList.LastOrDefault() == null ? 0 : customerList.LastOrDefault().CustomerId;
             var customerListCount = customerList.Count();
 
-          
+
             var pgt = new PageTracker() { Id = "1", LastPageNo = customerListLastId };
             if (lastPageDb == null)
             {
-                
-                await _cosmosService.AddAsync(pgt);
+
+                await _cosmosService.AddPageTracker(pgt);
             }
             else
             {
@@ -44,12 +44,12 @@ namespace SRG_SYSTEM.Controllers
                 {
                     pgt.LastPageNo = 0;
                 }
-               
-                await _cosmosService.Update(pgt);
+
+                await _cosmosService.UpdatePageTracker(pgt);
             }
 
-            
-            
+
+
             return Ok(customerList);
         }
 
