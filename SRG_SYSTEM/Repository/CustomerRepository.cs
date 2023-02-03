@@ -7,7 +7,8 @@ namespace SRG_SYSTEM.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public List<Customer> GetCountryList()
+
+        public List<Customer> GetCountryList(int lastPageId)
         {
 
 
@@ -27,7 +28,7 @@ namespace SRG_SYSTEM.Repository
                 {
                     ParameterName = "@lastPage", 
                     MySqlDbType = MySqlDbType.Int32,
-                    Value = 600, 
+                    Value = lastPageId, 
                     Direction = ParameterDirection.Input 
                 };
                 //Add the parameter to the Parameters property of SqlCommand object
